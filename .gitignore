@@ -1,0 +1,12 @@
+.idea/
+.vscode/
+node_modules/
+build/
+tmp/
+temp/
+*.env
+*.env.test
+backend/coverage/
+coverage
+backend/dist/
+dist/
