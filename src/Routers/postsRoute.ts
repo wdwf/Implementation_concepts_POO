@@ -5,20 +5,27 @@ import * as postsService from "../Services/postsService";
 const routes = Router();
 
 routes.get('/posts', async function (req: Request, res: Response) {
-  // const posts = await postsService.getPosts()
-  // res.status(200).json(posts)
-  res.status(200).json([
-    {
-      id: 1,
-      title: "Rest API: Métodos",
-      content: '....',
-      date: new Date()
-    }
-  ])
+  const posts = await postsService.getPosts();
+  res.status(200).json(posts.rows);
 });
-routes.get('/posts/:id');
-routes.post('/posts');
-routes.put('/posts/:id');
-routes.delete('/posts/:id');
+
+routes.post('/posts', async function (req: Request, res: Response) {
+  const post = req.body;
+  const newPost = await postsService.savePost(post);
+  res.json(newPost);
+});
+
+// routes.put('/posts/:id', async function (req: Request, res: Response) {
+//   const post = req.body;
+//   console.log(post);
+
+//   await postsService.updatePost(req.params.id, post);
+//   res.end();
+// });
+
+routes.delete('/post/:id', async function (req: Request, res: Response) {
+  await postsService.deletePost(req.params.id);
+  res.json({ message: "delete success" });
+});
 
 export default routes;
