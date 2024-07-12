@@ -1,31 +1,46 @@
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import * as postsService from "../Services/postsService";
 
 
 const routes = Router();
 
-routes.get('/posts', async function (req: Request, res: Response) {
-  const posts = await postsService.getPosts();
-  res.status(200).json(posts.rows);
+routes.get('/posts', async function (req: Request, res: Response, next: NextFunction) {
+  try {
+    const posts = await postsService.getPosts();
+    res.status(200).json(posts.rows);
+  } catch (error) {
+    next(error)
+  }
 });
 
-routes.post('/posts', async function (req: Request, res: Response) {
+routes.post('/posts', async function (req: Request, res: Response, next: NextFunction) {
   const post = req.body;
-  const newPost = await postsService.savePost(post);
-  res.json(newPost);
+  try {
+    const newPost = await postsService.savePost(post);
+    res.status(201).json(newPost);
+  } catch (error) {
+    next(error)
+  }
 });
 
-// routes.put('/posts/:id', async function (req: Request, res: Response) {
-//   const post = req.body;
-//   console.log(post);
 
-//   await postsService.updatePost(req.params.id, post);
-//   res.end();
-// });
+routes.put('/posts/:id', async function (req: Request, res: Response, next: NextFunction) {
+  const post = req.body;
+  try {
+    await postsService.updatePost(req.params.id, post);
+    res.status(204).json({ message: "update success" });
+  } catch (error) {
+    next(error)
+  }
+});
 
-routes.delete('/post/:id', async function (req: Request, res: Response) {
-  await postsService.deletePost(req.params.id);
-  res.json({ message: "delete success" });
+routes.delete('/post/:id', async function (req: Request, res: Response, next: NextFunction) {
+  try {
+    await postsService.deletePost(req.params.id);
+    res.status(204).json({ message: "delete success" });
+  } catch (error) {
+    next(error)
+  }
 });
 
 export default routes;
