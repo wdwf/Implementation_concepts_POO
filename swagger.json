@@ -1,0 +1,235 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de manipulação de posts de blog",
+    "description": "Essa API tem como objetivo a manipulação de posts para um blog",
+    "termsOfService": "http://localhost:3333/terms",
+    "contact": {
+      "email": "w_dwf@hotmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3333/v0",
+      "description": "API de test"
+    },
+    {
+      "url": "http://localhost:3333/v1",
+      "description": "API de produção"
+    }
+  ],
+  "paths": {
+    "/posts": {
+      "get": {
+        "summary": "Listagem de posts",
+        "description": "Essa rota será responsável por listar todos os posts",
+        "tags": ["Posts"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Nome do post para busca (esse é só um exemplo de definição de parameter)",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Post"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Criação de post",
+        "description": "Essa rota será responsável por criar um novo post.",
+        "tags": ["Posts"],
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Post"
+              },
+              "examples": {
+                "post": {
+                  "value": {
+                    "title": "Desenvolvimento utilizando POO",
+                    "content": "Texto descritivo"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "409": {
+            "description": "Post already exists"
+          },
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Post"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts/{id}": {
+      "put": {
+        "summary": "Atualização de post",
+        "description": "Essa rota será responsável por atualizar as informações de post",
+        "tags": ["Posts"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do post que sera atualizado",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Post"
+              },
+              "examples": {
+                "post": {
+                  "value": {
+                    "title": "Desenvolvimento utilizando Clean Architecture",
+                    "content": "Texto descritivo"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "Post not found"
+          },
+          "204": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Message"
+                },
+                "examples": {
+                  "message": {
+                    "value": {
+                      "message": "Update Success"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Exclusão de post",
+        "description": "Essa rota será responsável por excluir um post especifico",
+        "tags": ["Posts"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do post que sera atualizado",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Post"
+              },
+              "examples": {
+                "post": {
+                  "value": {
+                    "title": "Desenvolvimento utilizando Clean Architecture",
+                    "content": "Texto descritivo"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "Post not found"
+          },
+          "204": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Message"
+                },
+                "examples": {
+                  "message": {
+                    "value": {
+                      "message": "Update Success"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Post": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        }
+      },
+      "Message": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
+
