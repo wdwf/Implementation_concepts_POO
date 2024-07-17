@@ -154,27 +154,10 @@
           {
             "name": "id",
             "in": "path",
-            "description": "ID do post que sera atualizado",
+            "description": "ID do post que sera excluído",
             "required": true
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Post"
-              },
-              "examples": {
-                "post": {
-                  "value": {
-                    "title": "Desenvolvimento utilizando Clean Architecture",
-                    "content": "Texto descritivo"
-                  }
-                }
-              }
-            }
-          }
-        },
         "responses": {
           "404": {
             "description": "Post not found"
@@ -190,7 +173,7 @@
                 "examples": {
                   "message": {
                     "value": {
-                      "message": "Update Success"
+                      "message": "Successfully deleted"
                     }
                   }
                 }
@@ -232,4 +215,3 @@
     }
   }
 }
-

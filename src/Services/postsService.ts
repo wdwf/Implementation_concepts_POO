@@ -27,6 +27,7 @@ export async function updatePost(id: string, post: any) {
   return postsData.updatePost(id, post)
 }
 
-export function deletePost(id: string) {
+export async function deletePost(id: string) {
+  await getPost(id);
   return postsData.deletePost(id);
 }
